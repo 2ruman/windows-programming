@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -10,13 +9,23 @@ namespace ScreensaverPreventer
     public partial class MainForm : Form
     {
         private static bool welcomeToggle = false;
-        private const int DELAY_MS = 3000;
+        private const int DELAY_MS = 5000;
         private Thread mWorkThread = null;
         private bool keyEventFlag = true;
-        private bool mouseEventFlag = true;
+        private bool mouseMoveEventFlag = true;
+        private bool lMouseClickEventFlag = true;
+        private bool rMouseClickEventFlag = false;
 
         [DllImport("user32.dll")]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
+
+        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        private const int MOUSEEVENTF_LEFTUP = 0x04;
+        private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
         public MainForm()
         {
@@ -36,29 +45,46 @@ namespace ScreensaverPreventer
             int centerY = Screen.PrimaryScreen.Bounds.Height / 2;
             int destX, destY;
 
-            if( Cursor.Position.X > centerX )
+            if (Cursor.Position.X > centerX)
             {
-                destX = centerX - 200;
+                destX = centerX - 100;
             }
             else
             {
-                destX = centerX + 200;
+                destX = centerX + 100;
             }
             destY = centerY;
             Cursor.Position = new Point(destX, destY);
+        }
+
+        private void clickLeftMouse()
+        {
+            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+        }
+        private void clickRightMouse()
+        {
+            mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
         }
 
         private void prevent()
         {
             while(true)
             {
-                if( keyEventFlag )
+                if (keyEventFlag)
                 {
                     pressLWinKey();
                 }
-                if( mouseEventFlag)
+                if (mouseMoveEventFlag)
                 {
                     makeCursorRunawayFromCenter();
+                }
+                if (lMouseClickEventFlag)
+                {
+                    clickLeftMouse();
+                }
+                if (rMouseClickEventFlag)
+                {
+                    clickRightMouse();
                 }
                 Thread.Sleep(DELAY_MS);
             }
@@ -66,7 +92,6 @@ namespace ScreensaverPreventer
 
         private void abort()
         {
-            Debug.WriteLine("Abort!!!");
             if (mWorkThread != null)
             {
                 mWorkThread.Abort();
@@ -78,7 +103,7 @@ namespace ScreensaverPreventer
 
         private void lblWelcome_Click(object sender, EventArgs e)
         {
-            if( welcomeToggle = !welcomeToggle )
+            if (welcomeToggle = !welcomeToggle)
             {
                 lblWelcome.Text = "^.<";
             }
@@ -91,7 +116,7 @@ namespace ScreensaverPreventer
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            chbKeyEvent.Enabled = chbMouseEvent.Enabled = btnStart.Enabled = false;
+            chbKeyEvent.Enabled = chbMouseMove.Enabled = btnStart.Enabled = chbLeftMouse.Enabled = chbRightMouse.Enabled = false;
             mWorkThread = new Thread(prevent);
             mWorkThread.Start();
         }
@@ -104,7 +129,9 @@ namespace ScreensaverPreventer
         private void MainForm_Load(object sender, EventArgs e)
         {
             chbKeyEvent.Checked = keyEventFlag;
-            chbMouseEvent.Checked = mouseEventFlag;
+            chbMouseMove.Checked = mouseMoveEventFlag;
+            chbLeftMouse.Checked = lMouseClickEventFlag;
+            chbRightMouse.Checked = rMouseClickEventFlag;
         }
 
         private void chbKeyEvent_CheckedChanged(object sender, EventArgs e)
@@ -112,14 +139,24 @@ namespace ScreensaverPreventer
             keyEventFlag = chbKeyEvent.Checked;
         }
 
-        private void chbMouseEvent_CheckedChanged(object sender, EventArgs e)
+        private void chbchbMouseMove_CheckedChanged(object sender, EventArgs e)
         {
-            mouseEventFlag = chbMouseEvent.Checked;
+            mouseMoveEventFlag = chbMouseMove.Checked;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             abort();
+        }
+
+        private void chbLeftMouse_CheckedChanged(object sender, EventArgs e)
+        {
+            lMouseClickEventFlag = chbLeftMouse.Checked;
+        }
+
+        private void chbRightMouse_CheckedChanged(object sender, EventArgs e)
+        {
+            rMouseClickEventFlag = chbRightMouse.Checked;
         }
     }
 }

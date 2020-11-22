@@ -31,9 +31,11 @@ namespace ScreensaverPreventer
         {
             this.lblWelcome = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
-            this.chbMouseEvent = new System.Windows.Forms.CheckBox();
+            this.chbMouseMove = new System.Windows.Forms.CheckBox();
             this.chbKeyEvent = new System.Windows.Forms.CheckBox();
             this.btnFinish = new System.Windows.Forms.Button();
+            this.chbLeftMouse = new System.Windows.Forms.CheckBox();
+            this.chbRightMouse = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblWelcome
@@ -62,17 +64,17 @@ namespace ScreensaverPreventer
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // chbMouseEvent
+            // chbMouseMove
             // 
-            this.chbMouseEvent.AutoSize = true;
-            this.chbMouseEvent.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chbMouseEvent.Location = new System.Drawing.Point(12, 139);
-            this.chbMouseEvent.Name = "chbMouseEvent";
-            this.chbMouseEvent.Size = new System.Drawing.Size(95, 18);
-            this.chbMouseEvent.TabIndex = 2;
-            this.chbMouseEvent.Text = "Mouse Event";
-            this.chbMouseEvent.UseVisualStyleBackColor = true;
-            this.chbMouseEvent.CheckedChanged += new System.EventHandler(this.chbMouseEvent_CheckedChanged);
+            this.chbMouseMove.AutoSize = true;
+            this.chbMouseMove.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chbMouseMove.Location = new System.Drawing.Point(12, 139);
+            this.chbMouseMove.Name = "chbMouseMove";
+            this.chbMouseMove.Size = new System.Drawing.Size(95, 18);
+            this.chbMouseMove.TabIndex = 2;
+            this.chbMouseMove.Text = "Mouse Move";
+            this.chbMouseMove.UseVisualStyleBackColor = true;
+            this.chbMouseMove.CheckedChanged += new System.EventHandler(this.chbchbMouseMove_CheckedChanged);
             // 
             // chbKeyEvent
             // 
@@ -100,15 +102,39 @@ namespace ScreensaverPreventer
             this.btnFinish.UseVisualStyleBackColor = true;
             this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
             // 
+            // chbLeftMouse
+            // 
+            this.chbLeftMouse.AutoSize = true;
+            this.chbLeftMouse.Location = new System.Drawing.Point(142, 116);
+            this.chbLeftMouse.Name = "chbLeftMouse";
+            this.chbLeftMouse.Size = new System.Drawing.Size(113, 18);
+            this.chbLeftMouse.TabIndex = 4;
+            this.chbLeftMouse.Text = "Left Mouse Click";
+            this.chbLeftMouse.UseVisualStyleBackColor = true;
+            this.chbLeftMouse.CheckedChanged += new System.EventHandler(this.chbLeftMouse_CheckedChanged);
+            // 
+            // chbRightMouse
+            // 
+            this.chbRightMouse.AutoSize = true;
+            this.chbRightMouse.Location = new System.Drawing.Point(142, 141);
+            this.chbRightMouse.Name = "chbRightMouse";
+            this.chbRightMouse.Size = new System.Drawing.Size(122, 18);
+            this.chbRightMouse.TabIndex = 5;
+            this.chbRightMouse.Text = "Right Mouse Click";
+            this.chbRightMouse.UseVisualStyleBackColor = true;
+            this.chbRightMouse.CheckedChanged += new System.EventHandler(this.chbRightMouse_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(287, 299);
+            this.Controls.Add(this.chbRightMouse);
+            this.Controls.Add(this.chbLeftMouse);
             this.Controls.Add(this.chbKeyEvent);
             this.Controls.Add(this.btnFinish);
             this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.chbMouseEvent);
+            this.Controls.Add(this.chbMouseMove);
             this.Controls.Add(this.lblWelcome);
             this.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -127,9 +153,11 @@ namespace ScreensaverPreventer
 
         private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.CheckBox chbMouseEvent;
+        private System.Windows.Forms.CheckBox chbMouseMove;
         private System.Windows.Forms.CheckBox chbKeyEvent;
         private System.Windows.Forms.Button btnFinish;
+        private System.Windows.Forms.CheckBox chbLeftMouse;
+        private System.Windows.Forms.CheckBox chbRightMouse;
     }
 }
 
